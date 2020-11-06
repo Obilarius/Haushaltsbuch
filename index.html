@@ -4,6 +4,84 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Haushaltsbuch</title>
+    <link rel="stylesheet" href="style/main.css" />
   </head>
-  <body></body>
+  <body>
+    <input type="file" name="pdfupload" id="pdfupload" />
+    <div id="result"></div>
+  </body>
+
+  <script src="/scripts/pdf.js"></script>
 </html>
+
+<script>
+  // function getPageText(pageNum, PDFDocumentInstance) {
+  //   return new Promise(function (resolve, reject) {
+  //     PDFDocumentInstance.getPage(pageNum).then(function (pdfPage) {
+  //       pdfPage.getTextContent().then(function (textContent) {
+  //         var result = document.createElement("div");
+  //         let p = null;
+  //         var lastY = -1;
+  //         const regex = /^[0-2]{2}\.[0-2]{2}\. [0-2]{2}\.[0-2]{2}\. /;
+
+  //         textContent.items.forEach((i) => {
+  //           let m;
+  //           // NEW BLOCK
+  //           if ((m = regex.exec(i.str)) !== null) {
+  //             result.appendChild(p);
+  //             p = document.createElement("p");
+  //           }
+
+  //           // NEW LINE
+  //           if (lastY != i.transform[5]) {
+  //             p.textContent += "<br>";
+  //             lastY = i.transform[5];
+  //           }
+  //           p.textContent += i.str;
+  //         });
+
+  //         resolve(p);
+  //       });
+  //     });
+  //   });
+  // }
+
+  //Step 1: Get the file from the input element
+  document.getElementById("pdfupload").onchange = function (event) {
+    var file = event.target.files[0];
+    var fileReader = new FileReader();
+    let div = "div";
+
+    fileReader.onload = function () {
+      pdfjsLib.getDocument(new Uint8Array(this.result)).promise.then((pdf) => {
+        const pages = pdf.numPages;
+
+        pdf.getPage(1).then((pdfPage) => {
+          pdfPage.getTextContent().then((textContent) => {
+            var div = document.createElement("div");
+            textContent.items.forEach((line) => {
+              //  NEW BLOCK
+              const regex = /^[0-2]{2}\.[0-2]{2}\. [0-2]{2}\.[0-2]{2}\. /;
+              if (regex.exec(line.str) !== null) {
+                div += "</div><div class='transferBlock'>";
+              } else {
+                div += "<br>";
+              }
+
+              // const reg2 = /^[ ]{10}/;
+              // if (regex.exec(line.str) !== null) {
+              div += line.transform[5] + " -- " + line.str;
+              // }
+
+              document.getElementById("result").innerHTML = div;
+              console.log(line.str);
+            });
+          });
+        });
+      });
+    };
+
+    //Step 3:Read the file as ArrayBuffer
+    fileReader.readAsArrayBuffer(file);
+  };
+</script>
