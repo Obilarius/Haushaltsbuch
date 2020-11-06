@@ -8,80 +8,47 @@
   </head>
   <body>
     <input type="file" name="pdfupload" id="pdfupload" />
-    <div id="result"></div>
+    <button id="btnReadFile" onclick="readFile()">Read File</button>
+    <div id="payments"></div>
   </body>
 
-  <script src="/scripts/pdf.js"></script>
+  <script src="/scripts/lib/pdf.js"></script>
+  <script src="/scripts/zahlung.js"></script>
+  <script src="/scripts/readpdf.js"></script>
 </html>
 
 <script>
-  // function getPageText(pageNum, PDFDocumentInstance) {
-  //   return new Promise(function (resolve, reject) {
-  //     PDFDocumentInstance.getPage(pageNum).then(function (pdfPage) {
-  //       pdfPage.getTextContent().then(function (textContent) {
-  //         var result = document.createElement("div");
-  //         let p = null;
-  //         var lastY = -1;
-  //         const regex = /^[0-2]{2}\.[0-2]{2}\. [0-2]{2}\.[0-2]{2}\. /;
+  function readFile() {
+    // console.log("BUTTON");
+    // console.log(alleZahlungen);
+    const payments = document.getElementById("payments");
 
-  //         textContent.items.forEach((i) => {
-  //           let m;
-  //           // NEW BLOCK
-  //           if ((m = regex.exec(i.str)) !== null) {
-  //             result.appendChild(p);
-  //             p = document.createElement("p");
-  //           }
+    alleZahlungen.forEach((element) => {
+      console.log(element);
 
-  //           // NEW LINE
-  //           if (lastY != i.transform[5]) {
-  //             p.textContent += "<br>";
-  //             lastY = i.transform[5];
-  //           }
-  //           p.textContent += i.str;
-  //         });
+      // block
+      const div = document.createElement("div");
+      div.classList.add("paymentBlock");
+      // header
+      const header = document.createElement("div");
+      header.classList.add("header");
+      if (element.Saldoart == "H") header.classList.add("h");
+      else header.classList.add("s");
+      // saldo
+      const saldo = document.createElement("div");
+      saldo.classList.add("saldo");
+      // usage
+      const usage = document.createElement("div");
+      usage.classList.add("usage");
 
-  //         resolve(p);
-  //       });
-  //     });
-  //   });
-  // }
-
-  //Step 1: Get the file from the input element
-  document.getElementById("pdfupload").onchange = function (event) {
-    var file = event.target.files[0];
-    var fileReader = new FileReader();
-    let div = "div";
-
-    fileReader.onload = function () {
-      pdfjsLib.getDocument(new Uint8Array(this.result)).promise.then((pdf) => {
-        const pages = pdf.numPages;
-
-        pdf.getPage(1).then((pdfPage) => {
-          pdfPage.getTextContent().then((textContent) => {
-            var div = document.createElement("div");
-            textContent.items.forEach((line) => {
-              //  NEW BLOCK
-              const regex = /^[0-2]{2}\.[0-2]{2}\. [0-2]{2}\.[0-2]{2}\. /;
-              if (regex.exec(line.str) !== null) {
-                div += "</div><div class='transferBlock'>";
-              } else {
-                div += "<br>";
-              }
-
-              // const reg2 = /^[ ]{10}/;
-              // if (regex.exec(line.str) !== null) {
-              div += line.transform[5] + " -- " + line.str;
-              // }
-
-              document.getElementById("result").innerHTML = div;
-              console.log(line.str);
-            });
-          });
-        });
-      });
-    };
-
-    //Step 3:Read the file as ArrayBuffer
-    fileReader.readAsArrayBuffer(file);
-  };
+      //
+      saldo.innerHTML = element.Saldo + " " + element.Saldoart;
+      header.innerHTML = element.Datum + " -- " + element.Zahlungsart;
+      header.append(saldo);
+      usage.innerHTML = element.verwendungszweckAsString();
+      div.append(header);
+      div.append(usage);
+      payments.append(div);
+    });
+  }
 </script>
