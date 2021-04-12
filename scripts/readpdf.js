@@ -39,6 +39,7 @@ document.getElementById("pdfupload").onchange = function (event) {
                 zahlung.Zahlungsart = mZahlungsart[0].trim();
               } else if (zahlung != null) {
                 const reg = /Übertrag auf Blatt |neuer Kontostand vom /;
+
                 if (reg.exec(line.str)) {
                   alleZahlungen.push(zahlung);
                   zahlung = null;

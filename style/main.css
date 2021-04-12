@@ -33,4 +33,9 @@ body, html {
   font-size: 0.7rem;
   padding: 5px 40px;
 }
+
+#payments .paymentBlock .partner {
+  padding: 5px 40px;
+  background: rgba(0, 0, 0, 0.1);
+}
 /*# sourceMappingURL=main.css.map */

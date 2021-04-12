@@ -20,11 +20,12 @@
 <script>
   function readFile() {
     // console.log("BUTTON");
-    // console.log(alleZahlungen);
+    console.log(alleZahlungen);
+
     const payments = document.getElementById("payments");
 
     alleZahlungen.forEach((element) => {
-      console.log(element);
+      // console.log(element);
 
       // block
       const div = document.createElement("div");
@@ -37,6 +38,9 @@
       // saldo
       const saldo = document.createElement("div");
       saldo.classList.add("saldo");
+      // partner
+      const partner = document.createElement("div");
+      partner.classList.add("partner");
       // usage
       const usage = document.createElement("div");
       usage.classList.add("usage");
@@ -45,8 +49,10 @@
       saldo.innerHTML = element.Saldo + " " + element.Saldoart;
       header.innerHTML = element.Datum + " -- " + element.Zahlungsart;
       header.append(saldo);
+      partner.innerHTML = element.Partner();
       usage.innerHTML = element.verwendungszweckAsString();
       div.append(header);
+      div.append(partner);
       div.append(usage);
       payments.append(div);
     });
