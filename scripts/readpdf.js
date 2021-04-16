@@ -1,5 +1,11 @@
 const alleZahlungen = [];
 
+const zahlungFertig = (zahlung) => {
+  zahlung.build();
+  alleZahlungen.push(zahlung);
+  if (!zahlung.Partner) console.log(zahlung);
+};
+
 document.getElementById("pdfupload").onchange = function (event) {
   var file = event.target.files[0];
   var fileReader = new FileReader();
@@ -31,17 +37,19 @@ document.getElementById("pdfupload").onchange = function (event) {
                 );
                 const mZahlungsart = regZahlungsart.exec(line.str);
 
-                if (zahlung != null) alleZahlungen.push(zahlung);
+                if (zahlung != null) zahlungFertig(zahlung);
                 zahlung = new Zahlung();
                 zahlung.Datum = mDatum[0].substr(0, 5);
-                zahlung.Saldo = mBetrag[0].substr(0, mBetrag[0].length - 2);
+                zahlung.Saldo = parseFloat(
+                  mBetrag[0].substr(0, mBetrag[0].length - 2).replace(",", ".")
+                );
                 zahlung.Saldoart = mBetrag[0].substr(mBetrag[0].length - 1);
                 zahlung.Zahlungsart = mZahlungsart[0].trim();
               } else if (zahlung != null) {
                 const reg = /Übertrag auf Blatt |neuer Kontostand vom /;
 
                 if (reg.exec(line.str)) {
-                  alleZahlungen.push(zahlung);
+                  zahlungFertig(zahlung);
                   zahlung = null;
                 } else {
                   zahlung.Verwendungszweck.push(line.str.trim());

@@ -5,15 +5,12 @@ class Zahlung {
   Saldoart;
   Verwendungszweck = [];
   Kategorie;
+  Partner;
 
-  verwendungszweckAsString() {
-    const tmp = this.Verwendungszweck;
-    tmp.shift();
-    return tmp.join("<br>");
-  }
-
-  Partner() {
-    return this.Verwendungszweck[0];
+  build() {
+    this.Partner = this.Verwendungszweck[0];
+    this.Verwendungszweck.shift();
+    this.Verwendungszweck = this.Verwendungszweck.join("");
   }
 
   createHash() {}
