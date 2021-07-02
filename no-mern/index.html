@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bookings</title>
+    <link rel="stylesheet" href="style/main.css" />
+  </head>
+  <body>
+    <input type="file" name="pdfupload" id="pdfupload" />
+    <button id="btnReadFile" onclick="readFile()">Read File</button>
+    <div id="payments"></div>
+  </body>
+
+  <script src="scripts/lib/pdf.js"></script>
+  <script src="scripts/zahlung.js"></script>
+  <script src="scripts/readpdf.js"></script>
+</html>
+
+<script>
+  function readFile() {
+    // console.log("BUTTON");
+
+    const payments = document.getElementById("payments");
+
+    alleZahlungen.forEach((element) => {
+      // console.log(element);
+
+      // block
+      const div = document.createElement("div");
+      div.classList.add("paymentBlock");
+      // header
+      const header = document.createElement("div");
+      header.classList.add("header");
+      if (element.Saldoart == "H") header.classList.add("h");
+      else header.classList.add("s");
+      // saldo
+      const saldo = document.createElement("div");
+      saldo.classList.add("saldo");
+      // partner
+      const partner = document.createElement("div");
+      partner.classList.add("partner");
+      // usage
+      const usage = document.createElement("div");
+      usage.classList.add("usage");
+
+      //
+      saldo.innerHTML = element.Saldo + " " + element.Saldoart;
+      header.innerHTML = element.Datum + " -- " + element.Zahlungsart;
+      header.append(saldo);
+      partner.innerHTML = element.Partner;
+      usage.innerHTML = element.Verwendungszweck;
+      div.append(header);
+      div.append(partner);
+      div.append(usage);
+      payments.append(div);
+    });
+  }
+</script>

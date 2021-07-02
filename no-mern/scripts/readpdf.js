@@ -22,7 +22,8 @@ document.getElementById("pdfupload").onchange = function (event) {
             // Each Line
             textContent.items.forEach((line) => {
               //  NEW BLOCK
-              const regDatum = /^[0-3]{1}[0-9]{1}\.[0-1]{1}[0-9]{1}\. [0-3]{1}[0-9]{1}\.[0-1]{1}[0-9]{1}\. /;
+              const regDatum =
+                /^[0-3]{1}[0-9]{1}\.[0-1]{1}[0-9]{1}\. [0-3]{1}[0-9]{1}\.[0-1]{1}[0-9]{1}\. /;
               if (regDatum.exec(line.str) !== null) {
                 // Datum
                 let mDatum = regDatum.exec(line.str);
