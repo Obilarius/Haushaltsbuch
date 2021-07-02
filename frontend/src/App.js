@@ -4,7 +4,7 @@ import LoadBankStatement from "./pages/loadBankStatement";
 function App() {
   return (
     <div className="App">
-      <LoadBankStatement />
+      <LoadBankStatement/>
     </div>
   );
 }

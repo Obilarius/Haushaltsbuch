@@ -1,44 +1,35 @@
-import React, { useState } from "react";
-import pdf from "pdf-parse";
+import React, { useEffect } from "react";
 
 const LoadBankStatement = () => {
-  const [selectedFile, setSelectedFile] = useState("");
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "/lib/pdf.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
-  const readFileDataAsBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+  const fileOnChangeHandler = (event) => {
+    const file = event.target.files[0];
+    const year = file.name.split("_")[1];
 
-      reader.onload = (event) => {
-        resolve(event.target.result);
-      };
+    var fileReader = new FileReader();
 
-      reader.onerror = (err) => {
-        reject(err);
-      };
+    fileReader.onload = (e) => {
+      pdfjsLib.getDocument(new Uint8Array(this.result)).promise.then((pdf) => {
+        const pages = pdf.numPages;
+      });
+    };
 
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const onFileChange = (file) => {
-    setSelectedFile(file);
-    console.log(file);
-
-    readFileDataAsBase64(file).then((e) => {
-      console.log(e);
-    });
+    fileReader.readAsArrayBuffer(file);
   };
 
   return (
     <div className="App">
-      {/* <input type="file" name="pdfupload" id="pdfupload" /> */}
-      <input
-        type="file"
-        // value={selectedFile}
-        onChange={(e) => {
-          onFileChange(e.target.files[0]);
-        }}
-      />
+      <input type="file" name="pdfupload" id="pdfupload" onChange={fileOnChangeHandler} />
+      {/* <button id="btnReadFile" onClick="readFile()">Read File</button> */}
       <div id="payments"></div>
     </div>
   );

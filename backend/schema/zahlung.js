@@ -1,16 +1,19 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const zahlungSchema = new Schema({
-  hash: String,
-  datum: Date,
-  zahlungsart: String,
-  saldo: Number,
-  saldoart: String,
-  verwendungszweck: Array,
-  kategorie: Array,
-  partner: String,
-});
+const zahlungSchema = new Schema(
+  {
+    hash: { type: Number, index: true, unique: true },
+    datum: Date,
+    zahlungsart: String,
+    saldo: Number,
+    saldoart: String,
+    verwendungszweck: Array,
+    kategorie: Array,
+    partner: String,
+  },
+  { timestamps: true }
+);
 
-const Zahlung = mongoose.model("Zahlung", zahlungSchema);
-export default Zahlung;
+const Zahlung = mongoose.model("zahlung", zahlungSchema);
+module.exports = Zahlung;

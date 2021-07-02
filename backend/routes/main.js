@@ -1,15 +1,29 @@
 const express = require("express");
 const router = express.Router();
+const Zahlung = require("../schema/zahlung");
 
-router.post("/", async (req, res) => {
+router.post("/upload", async (req, res) => {
   const data = req.body;
   const errors = [];
 
-  if (errors.length > 0) {
-    res.status(409).send(errors);
-  } else {
-    res.status(201).send(data);
-  }
+  data.forEach((el) => {
+    const zahlung = new Zahlung({
+      hash: el.Hash,
+      datum: el.Datum,
+      zahlungsart: el.Zahlungsart,
+      saldo: el.Saldo,
+      saldoart: el.Saldoart,
+      verwendungszweck: el.Verwendungszweck,
+      partner: el.Partner,
+    });
+
+    zahlung.save((err) => {
+      if (err) errors.push({ err: err, data: el });
+      // saved!
+    });
+  });
+
+  res.status(201).send(errors);
 });
 
 router.get("/:data", (req, res) => {
