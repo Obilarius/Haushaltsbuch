@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Haushaltsbuch</title>
+    <title>Bookings</title>
     <link rel="stylesheet" href="style/main.css" />
   </head>
   <body>
@@ -12,9 +12,9 @@
     <div id="payments"></div>
   </body>
 
-  <script src="/scripts/lib/pdf.js"></script>
-  <script src="/scripts/zahlung.js"></script>
-  <script src="/scripts/readpdf.js"></script>
+  <script src="scripts/lib/pdf.js"></script>
+  <script src="scripts/zahlung.js"></script>
+  <script src="scripts/readpdf.js"></script>
 </html>
 
 <script>
@@ -25,6 +25,7 @@
 
     alleZahlungen.forEach((element) => {
       // console.log(element);
+
 
       // block
       const div = document.createElement("div");
