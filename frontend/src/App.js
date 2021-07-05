@@ -1,10 +1,11 @@
 import React from "react";
-import LoadBankStatement from "./pages/loadBankStatement";
+import Navbar from "./components/navbar";
+import Theme from "./theme";
 
 function App() {
   return (
-    <div className="App">
-      <LoadBankStatement/>
+    <div className="App" style={{ color: Theme.color.textPrimary }}>
+      <Navbar />
     </div>
   );
 }
